@@ -1,0 +1,29 @@
+//Design Code
+module mux7x1(output out,input s2,s1,s0,a,b,c,d,e,f,g);
+  assign out=s2?(s1?(s0?g:g):(s0?f:e)):(s1?(s0?d:c):(s0?b:a));
+endmodule
+
+//Test Bench Code
+module test();
+  reg s2,s1,s0,a,b,c,d,e,f,g;
+  wire out;
+  integer i;
+  mux7x1 DUT(out,s2,s1,s0,a,b,c,d,e,f,g);
+  initial
+    begin
+      for(i=0;i<1024;i=i+1)
+        begin
+          {s2,s1,s0,a,b,c,d,e,f,g}=i;
+          #3;
+        end
+    end
+  initial
+    begin
+      $dumpfile("test.vcd");
+      $dumpvars(1);
+    end
+  initial
+    begin
+      $monitor("time=%0t,s2=%b,s1=%b,s0=%b,a=%b,b=%b,c=%b,d=%b,e=%b,f=%b,g=%b,out=%b",$time,s2,s1,s0,a,b,c,d,e,f,g,out);
+    end
+endmodule
